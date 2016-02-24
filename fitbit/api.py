@@ -169,6 +169,9 @@ class FitbitOauth2Client(object):
         self.session = requests.Session()
         self.client_id = client_id
         self.client_secret = client_secret
+        dec_str = ":".join([client_id, client_secret])
+        enc_str = base64.b64encode(dec_str.encode("utf-8"))
+        self.auth_header = {"Authorization": b'Basic ' + enc_str}
         self.token = {'access_token' : access_token,
                       'refresh_token': refresh_token}
         self.oauth = OAuth2Session(client_id)
@@ -269,8 +272,7 @@ class FitbitOauth2Client(object):
         auth = OAuth2Session(self.client_id, redirect_uri=redirect_uri)
         self.token = auth.fetch_token(
             self.access_token_url,
-            username=self.client_id,
-            password=self.client_secret,
+            headers=self.auth_header,
             code=code)
 
         return self.token
