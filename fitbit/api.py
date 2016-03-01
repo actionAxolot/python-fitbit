@@ -283,15 +283,10 @@ class FitbitOauth2Client(object):
         the token is internally saved
         """
 
-        unenc_str = (self.client_id + ':' + self.client_secret).encode('utf8')
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            'Authorization': b'Basic ' + base64.b64encode(unenc_str)
-        }
         self.token = self.oauth.refresh_token(
             self.refresh_token_url,
             refresh_token=self.token['refresh_token'],
-            headers=headers)
+            auth=(self.client_id, self.client_secret))
         return self.token
 
 
