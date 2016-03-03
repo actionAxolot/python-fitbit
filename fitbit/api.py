@@ -191,6 +191,9 @@ class FitbitOauth2Client(object):
         if not method:
             method = 'POST' if data else 'GET'
 
+        auth = OAuth2(client_id=self.client_id, token=self.token)
+        response = self._request(method, url, data=data, auth=auth, **kwargs)
+
         if response.status_code == 401:
             raise HTTPUnauthorized(response)
         elif response.status_code == 403:
