@@ -64,7 +64,7 @@ class FitbitOauthClient(object):
         """
         A simple wrapper around requests.
         """
-        return self.session.request(method, url, **kwargs)
+        return self.session.request(method, url, timeout=30.0, **kwargs)
 
     def make_request(self, url, data={}, method=None, **kwargs):
         """
@@ -180,7 +180,7 @@ class FitbitOauth2Client(object):
         """
         A simple wrapper around requests.
         """
-        return self.session.request(method, url, **kwargs)
+        return self.session.request(method, url, timeout=30.0, **kwargs)
 
     def make_request(self, url, data={}, method=None, **kwargs):
         """
@@ -263,10 +263,19 @@ class FitbitOauth2Client(object):
         the token is internally saved
         """
 
-        self.token = self.oauth.refresh_token(
-            self.refresh_token_url,
-            refresh_token=self.token['refresh_token'],
-            auth=(self.client_id, self.client_secret))
+        try:
+            self.token = self.oauth.refresh_token(
+                self.refresh_token_url,
+                refresh_token=self.token['refresh_token'],
+                auth=(self.client_id, self.client_secret),
+                timeout=30)
+        except requests.Timeout:
+            self.token = self.oauth.refresh_token(
+                self.refresh_token_url,
+                refresh_token=self.token['refresh_token'],
+                auth=(self.client_id, self.client_secret),
+                timeout=30)
+            
         return self.token
 
 
