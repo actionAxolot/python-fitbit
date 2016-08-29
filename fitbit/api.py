@@ -19,6 +19,7 @@ from fitbit.exceptions import (BadResponse, DeleteError, HTTPBadRequest,
                                HTTPTooManyRequests)
 from fitbit.utils import curry
 
+TIMEOUT_SECONDS = 27.0
 
 class FitbitOauthClient(object):
     API_ENDPOINT = "https://api.fitbit.com"
@@ -64,7 +65,7 @@ class FitbitOauthClient(object):
         """
         A simple wrapper around requests.
         """
-        return self.session.request(method, url, timeout=10.0, **kwargs)
+        return self.session.request(method, url, timeout=TIMEOUT_SECONDS, **kwargs)
 
     def make_request(self, url, data={}, method=None, **kwargs):
         """
@@ -180,7 +181,7 @@ class FitbitOauth2Client(object):
         """
         A simple wrapper around requests.
         """
-        return self.session.request(method, url, timeout=10.0, **kwargs)
+        return self.session.request(method, url, timeout=TIMEOUT_SECONDS, **kwargs)
 
     def make_request(self, url, data={}, method=None, **kwargs):
         """
@@ -268,13 +269,13 @@ class FitbitOauth2Client(object):
                 self.refresh_token_url,
                 refresh_token=self.token['refresh_token'],
                 auth=(self.client_id, self.client_secret),
-                timeout=10)
+                timeout=TIMEOUT_SECONDS)
         except requests.Timeout:
             self.token = self.oauth.refresh_token(
                 self.refresh_token_url,
                 refresh_token=self.token['refresh_token'],
                 auth=(self.client_id, self.client_secret),
-                timeout=10)
+                timeout=TIMEOUT_SECONDS)
             
         return self.token
 
