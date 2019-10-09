@@ -891,6 +891,8 @@ class Fitbit(object):
             to_month=to_date.month,
             to_day=to_date.day
         )
+
+        print "URL %s" % (url, )
         return self.make_request(url)
 
     def log_sleep(self, start_time, duration):
