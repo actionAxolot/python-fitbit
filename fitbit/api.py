@@ -287,7 +287,7 @@ class Fitbit(object):
     METRIC = 'en_UK'
 
     API_ENDPOINT = "https://api.fitbit.com"
-    API_VERSION = "1.2"
+    API_VERSION = 1
     WEEK_DAYS = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']
     PERIODS = ['1d', '7d', '30d', '1w', '1m', '3m', '6m', '1y', 'max']
 
@@ -882,14 +882,13 @@ class Fitbit(object):
         https://wiki.fitbit.com/display/API/API-Get-Sleep
         date should be a datetime.date object.
         """
-        url = "{0}/{1}/user/-/sleep/date/{from_year}-{from_month}-{from_day}/{to_year}-{to_month}-{to_day}.json".format(
+
+        from_date_string = from_date.strftime("%Y-%m-%d")
+        to_date_string = to_date.strftime("%Y-%m-%d")
+        url = "{0}/{1}/user/-/sleep/date/{from_date_string}/{to_date_string}.json".format(
             *self._get_common_args(),
-            from_year=from_date.year,
-            from_month=from_date.month,
-            from_day=from_date.day,
-            to_year=to_date.year,
-            to_month=to_date.month,
-            to_day=to_date.day
+            from_date_string=from_date_string,
+            to_date_string=to_date_string
         )
 
         print "URL %s" % (url, )
