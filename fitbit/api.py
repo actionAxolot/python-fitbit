@@ -356,7 +356,6 @@ class Fitbit(object):
             else:
                 raise DeleteError(response)
 
-        print response.content.decode('utf8')    
         try:
             rep = json.loads(response.content.decode('utf8'))
         except ValueError:
