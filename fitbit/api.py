@@ -877,16 +877,19 @@ class Fitbit(object):
         )
         return self.make_request(url, method="DELETE")
 
-    def get_sleep(self, date):
+    def get_sleep(self, from_date, to_date):
         """
         https://wiki.fitbit.com/display/API/API-Get-Sleep
         date should be a datetime.date object.
         """
-        url = "{0}/{1}/user/-/sleep/date/{year}-{month}-{day}.json".format(
+        url = "{0}/{1}/user/-/sleep/date/{from_year}-{from_month}-{from_day}/{to_year}-{to_month}-{to_day}.json".format(
             *self._get_common_args(),
-            year=date.year,
-            month=date.month,
-            day=date.day
+            from_year=from_date.year,
+            from_month=from_date.month,
+            from_day=from_date.day,
+            to_year=to_date.year,
+            to_month=to_date.month,
+            to_day=to_date.day
         )
         return self.make_request(url)
 
